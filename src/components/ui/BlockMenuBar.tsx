@@ -7,74 +7,33 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar';
 
-interface IMenuBarItem {
-  [key: string]: {
-    name: string;
-    shortcut?: string;
-    disabled?: boolean;
-    inset?: boolean;
-  }[];
-}
-const menubarItems: IMenuBarItem = {
-  Convolution: [
-    {
-      name: '2D Convolution',
-      shortcut: '⌘T',
-    },
-    {
-      name: 'Depthwise Convolution',
-      shortcut: '⌘N',
-    },
-    {
-      name: '1D Convolution',
-      disabled: true,
-    },
-    {
-      name: 'Deconvolution',
-      shortcut: '⌘N',
-    },
-  ],
-  Pooling: [
-    {
-      name: 'Max Pooling',
-      shortcut: '⌘Z',
-    },
-    {
-      name: 'Average Pooling',
-      shortcut: '⇧⌘Z',
-    },
-  ],
-  Upsampling: [
-    {
-      name: 'Transpose Convolution',
-      shortcut: '⌘R',
-      inset: true,
-    },
-    {
-      name: 'Bilinear Upsampling',
-      shortcut: '⇧⌘R',
-      inset: true,
-    },
-    {
-      name: 'Nearest Neighbor Upsampling',
-      inset: true,
-    },
-    {
-      name: 'Pixel Shuffle',
-      inset: true,
-    },
-  ],
-};
+import { spatialBlocks } from '@/constant/spatial-blocks';
 
-export default function BlockMenuBar() {
+export default function BlockMenuBar({
+  selectedBlockArray,
+  setSelectedBlockArray,
+}: {
+  selectedBlockArray: string[];
+  setSelectedBlockArray: (value: any[]) => void;
+}) {
+  const handleBlockSelection = (item: any) => {
+    setSelectedBlockArray([...selectedBlockArray, item]);
+  };
+
   return (
     <Menubar>
-      {Object.entries(menubarItems).map(([name, items]) => (
-        <MenubarMenu key={name}>
+      {Object.entries(spatialBlocks).map(([name, items]) => (
+        <MenubarMenu key={name} value={name}>
           <MenubarTrigger>{name}</MenubarTrigger>
           <MenubarContent>
             {items.map((item, index) => (
-              <MenubarItem key={index} inset={item.inset ?? false}>
+              <MenubarItem
+                key={index}
+                inset={item.inset ?? false}
+                textValue={item.name}
+                onSelect={(e) => handleBlockSelection(item)}
+                data-value={item.name}
+              >
                 {item.name}
                 {item.shortcut && (
                   <MenubarShortcut>{item.shortcut}</MenubarShortcut>

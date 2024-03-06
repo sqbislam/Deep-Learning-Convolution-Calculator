@@ -30,7 +30,6 @@ export const metadata: Metadata = {
   title: 'Input Selector',
 };
 
-//const commonDims = [16, 32, 64, 128, 256, 512, 1024];
 const commonDims = ['16', '32', '64', '128', '256', '512', '1024'];
 
 const commonChannels = ['1', '3', '4', '6', '12'];
