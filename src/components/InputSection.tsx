@@ -1,9 +1,11 @@
 'use client';
 
 import { Label } from '@radix-ui/react-label';
+import { Link, Unlink } from 'lucide-react';
 import { Metadata } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import ImageBlock from '@/components/ImageBlock';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -20,6 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Toggle } from '@/components/ui/toggle';
+
+import { useGlobalContext } from '@/store/GlobalStateContext';
 
 export const metadata: Metadata = {
   title: 'Input Selector',
@@ -31,25 +36,46 @@ const commonDims = ['16', '32', '64', '128', '256', '512', '1024'];
 const commonChannels = ['1', '3', '4', '6', '12'];
 
 export default function InputSection() {
-  const MAX_CHANNEL_DISPLAY = 10;
   // Create states for height, width and channels
-  const [height, setHeight] = useState('');
-  const [width, setWidth] = useState('');
-  const [channels, setChannels] = useState('1');
+  const [height, setHeight] = useState(commonDims[0]);
+  const [width, setWidth] = useState(commonDims[0]);
+  const [channels, setChannels] = useState(commonChannels[0]);
+  const [bindDimensions, setBindDimensions] = useState(true);
+  const globalContext = useGlobalContext();
+
+  useEffect(() => {
+    // Update global context when any of the following changes
+    if (globalContext?.setInput)
+      globalContext.setInput({ height, width, channels });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [channels, height, width]);
 
   // Create a function to handle the selection of height
   const handleHeightSelection = (value: string) => {
-    setHeight(value);
+    if (bindDimensions) {
+      setWidth(value);
+      setHeight(value);
+    } else {
+      setHeight(value);
+    }
   };
   // Create a function to handle the selection of width
   const handleWidthSelection = (value: string) => {
-    setWidth(value);
+    if (bindDimensions) {
+      setWidth(value);
+      setHeight(value);
+    } else {
+      setWidth(value);
+    }
   };
   // Create a function to handle the selection of channels
   const handleChannelsSelection = (value: string) => {
     setChannels(value);
   };
-
+  // Create function to toggle the bind dimensions
+  const handleBindDimensions = (pressed: boolean) => {
+    setBindDimensions(!pressed);
+  };
   return (
     <Card className='flex-grow'>
       <CardHeader>
@@ -59,8 +85,8 @@ export default function InputSection() {
       <CardContent>
         <form>
           <div className='flex flex-col w-full items-center gap-2 space-y-20'>
-            <div className='flex flex-row flex-1 p-2 justify-center gap-2'>
-              <div className='flex flex-col space-y-1.5 min-w-[100px]'>
+            <div className='flex flex-row flex-1 p-2 justify-center gap-2 items-center'>
+              <div className='flex flex-col space-y-1.5 min-w-[80px] relative'>
                 <Label htmlFor='height'>Height</Label>
                 <Select onValueChange={handleHeightSelection} value={height}>
                   <SelectTrigger id='height'>
@@ -75,7 +101,15 @@ export default function InputSection() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className='flex flex-col space-y-1.5 min-w-[100px]'>
+              <Toggle
+                variant='outline'
+                size='icon'
+                onPressedChange={handleBindDimensions}
+                className='h-5 w-5 mt-8'
+              >
+                {bindDimensions ? <Link /> : <Unlink />}
+              </Toggle>
+              <div className='flex flex-col space-y-1.5 min-w-[80px]'>
                 <Label htmlFor='width'>Width</Label>
                 <Select onValueChange={handleWidthSelection} value={width}>
                   <SelectTrigger id='width'>
@@ -90,7 +124,7 @@ export default function InputSection() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className='flex flex-col space-y-1.5 min-w-[100px]'>
+              <div className='flex flex-col space-y-1.5 min-w-[80px]'>
                 <Label htmlFor='channels'>Channels</Label>
                 <Select
                   onValueChange={handleChannelsSelection}
@@ -109,31 +143,7 @@ export default function InputSection() {
                 </Select>
               </div>
             </div>
-            <div className=' w-32 h-32 bg-purple-200 border-2 border-white shadow-lg shadow-gray-200 col-span-3 relative '>
-              <p className='absolute text-md font-bold top-[-40px] right-[3em]'>
-                {`W  ${width}`}
-              </p>
-              <p className='absolute text-md font-bold top-[2.5em] left-[-4em]'>
-                {`H  ${height}`}
-              </p>
-              <p className='absolute text-md font-bold top-[-40px] right-[-3em]'>
-                {`C  ${channels}`}
-              </p>
-
-              {[...Array(parseInt(channels) - 1)].map(
-                (_, i) =>
-                  i < MAX_CHANNEL_DISPLAY && (
-                    <div
-                      key={i}
-                      className='absolute w-32 h-32 bg-slate-500 border-black opacity-70'
-                      style={{
-                        top: `${i * 5 + 20}px`,
-                        left: `${i * 5 + 20}px`,
-                      }}
-                    ></div>
-                  )
-              )}
-            </div>
+            <ImageBlock dimensions={{ height, width, channels }} />
           </div>
         </form>
       </CardContent>
