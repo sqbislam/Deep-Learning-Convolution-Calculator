@@ -4,3 +4,7 @@ I have personally faced this as a challenge when trying to manually calculate al
 I hope this will help others implementing deep learning models
 
 ### Simple calculator that meets all deep learning training requirements.
+
+Currently WIP....
+
+![WIP Image](./assets/wip-current.png)
