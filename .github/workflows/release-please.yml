@@ -1,17 +1,16 @@
-name: release-please
+name: deploy-to-vercel
 on:
-  # !STARTERCONF Choose your preferred event
-  # !Option 1: Manual Trigger from GitHub
-  workflow_dispatch:
-  # !Option 2: Release on every push on main branch
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+
 jobs:
-  release-please:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v20
         with:
-          release-type: node
-          package-name: release-please-action
+          vercel-token: ${{ secrets.VERCEL_TOKEN }
