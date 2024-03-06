@@ -25,6 +25,7 @@ export interface ISpatialBlock {
   name: string;
   shortcut?: string;
   disabled?: boolean;
+  type?: string;
   color?: string;
   inset?: boolean;
   input?: string;

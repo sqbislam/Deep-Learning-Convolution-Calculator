@@ -42,7 +42,7 @@ export default function BlockEditForm(props: {
       <PopoverTrigger asChild className='relative '>
         <div>
           <div
-            className={`button-hover-effect h-[70px] w-[30px] ${
+            className={`button-hover-effect h-[120px] w-[30px] ${
               block?.color ?? 'bg-lime-200'
             }  border-black opacity-80 relative`}
           >

@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 
-import { convolution2D } from '@/lib/calculations';
+import { convolution2D, pooling2D, transposeConv2D } from '@/lib/calculations';
 import { GlobalContextType, ISpatialBlock } from '@/lib/types';
 import { nestedCopy } from '@/lib/utils';
 
@@ -52,11 +52,22 @@ export const GlobalStateProvider = (props: PropsWithChildren) => {
     () => {
       const newSelectedArray = nestedCopy(selectedBlockArray);
       let output = input;
+      let calculatedOutput: any;
       selectedBlockArray.forEach((block: ISpatialBlock, idx) => {
-        const { outputHeight, outputWidth, outputChannels } = convolution2D(
-          output,
-          block
-        );
+        switch (block.type) {
+          case 'conv2d':
+            calculatedOutput = convolution2D(output, block);
+            break;
+          case 'pool':
+            calculatedOutput = pooling2D(output, block);
+            break;
+          case 'transpose2d':
+            calculatedOutput = transposeConv2D(output, block);
+            break;
+          default:
+            break;
+        }
+        const { outputHeight, outputWidth, outputChannels } = calculatedOutput;
         // Calculate the current output
         const curr_output = {
           height: outputHeight.toString(),
