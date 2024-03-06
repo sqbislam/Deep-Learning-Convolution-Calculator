@@ -1,9 +1,12 @@
+'use client';
 // Create new next component
 
+import { Eraser } from 'lucide-react';
 import { Metadata } from 'next';
-import { useState } from 'react';
 
+import BlockEditForm from '@/components/BlockEditForm';
 import BlockMenuBar from '@/components/ui/BlockMenuBar';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -13,13 +16,16 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+import { useGlobalContext } from '@/store/GlobalStateContext';
+
 export const metadata: Metadata = {
   title: 'Block Selector',
 };
 
 export default function BlockSection() {
-  const [selectedBlockArray, setSelectedBlockArray] = useState<any[]>([]);
-
+  const globalStore = useGlobalContext();
+  const { deleteLastBlock, selectedBlockArray, handleUpdatingBlock } =
+    globalStore;
   return (
     <Card className='flex-grow'>
       <CardHeader>
@@ -30,27 +36,32 @@ export default function BlockSection() {
       </CardHeader>
       <CardContent>
         <div className='flex flex-col w-full items-center gap-2 space-y-20'>
-          <BlockMenuBar
-            selectedBlockArray={selectedBlockArray}
-            setSelectedBlockArray={setSelectedBlockArray}
-          />
+          <BlockMenuBar />
           <div className='flex flex-row items-center justify-start gap-2 flex-wrap max-w-[300px]'>
-            {selectedBlockArray.map((block, index) => (
-              <div
-                key={index}
-                className={`h-[50px] w-[15px] ${
-                  block?.color ?? 'bg-lime-200'
-                }  border-black opacity-80 relative`}
-              >
-                <span className='text-xs absolute bottom-[-2em] left-[-0.2em]'>
-                  {block?.shortcut}
-                </span>
-              </div>
-            ))}
+            {selectedBlockArray &&
+              selectedBlockArray.map((block, index) => (
+                <BlockEditForm
+                  key={index}
+                  block={block}
+                  onUpdate={handleUpdatingBlock}
+                />
+              ))}
           </div>
         </div>
       </CardContent>
-      <CardFooter className='mt-auto py-10 flex justify-center items-center'></CardFooter>
+      <CardFooter className='mt-auto py-10 flex justify-center items-center'>
+        {selectedBlockArray && selectedBlockArray.length > 0 && (
+          <div className='flex items-center justify-center flex-grow'>
+            <Button
+              variant='outline'
+              size='icon'
+              onClick={(e) => deleteLastBlock && deleteLastBlock()}
+            >
+              <Eraser />
+            </Button>
+          </div>
+        )}
+      </CardFooter>
     </Card>
   );
 }

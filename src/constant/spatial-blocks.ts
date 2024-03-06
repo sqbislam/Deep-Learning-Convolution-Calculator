@@ -1,24 +1,17 @@
-interface ISpatialBlock {
-  [key: string]: {
-    name: string;
-    shortcut?: string;
-    disabled?: boolean;
-    color?: string;
-    inset?: boolean;
-    properties?: { [key: string]: string };
-  }[];
-}
-export const spatialBlocks: ISpatialBlock = {
+import { ISpatialBlocks } from '@/lib/types';
+
+export const spatialBlocks: ISpatialBlocks = {
   Convolution: [
     {
       name: '2D Convolution',
       shortcut: '2C',
       color: 'bg-red-200',
+
       properties: {
-        input: '28x28',
-        filter: '3x3',
+        filterSize: '3',
         stride: '2',
         padding: '2',
+        numFilters: '32',
       },
     },
     {
@@ -26,33 +19,22 @@ export const spatialBlocks: ISpatialBlock = {
       shortcut: 'DC',
       color: 'bg-red-300',
       properties: {
-        input: '28x28',
-        filter: '3x3',
+        filterSize: '3',
         stride: '2',
         padding: '2',
+        numFilters: '32',
       },
     },
-    {
-      name: '1D Convolution',
-      shortcut: '1C',
-      disabled: true,
-      color: 'bg-red-400',
-      properties: {
-        input: '28x28',
-        filter: '3x3',
-        stride: '2',
-        padding: '2',
-      },
-    },
+
     {
       name: 'Deconvolution',
       shortcut: 'dC',
       color: 'bg-red-700',
       properties: {
-        input: '28x28',
         filter: '3x3',
         stride: '2',
         padding: '2',
+        numFilters: '32',
       },
     },
   ],
@@ -62,10 +44,10 @@ export const spatialBlocks: ISpatialBlock = {
       shortcut: 'MP',
       color: 'bg-cyan-400',
       properties: {
-        input: '28x28',
         filter: '3x3',
         stride: '2',
         padding: '2',
+        numFilters: '32',
       },
     },
     {
@@ -77,6 +59,7 @@ export const spatialBlocks: ISpatialBlock = {
         filter: '3x3',
         stride: '2',
         padding: '2',
+        numFilters: '32',
       },
     },
   ],

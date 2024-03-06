@@ -44,8 +44,17 @@ export default function InputSection() {
 
   useEffect(() => {
     // Update global context when any of the following changes
+
     if (globalContext?.setInput)
       globalContext.setInput({ height, width, channels });
+    if (
+      globalContext &&
+      globalContext?.setOutput &&
+      globalContext?.selectedBlockArray?.length == 0
+    ) {
+      globalContext.setOutput({ height, width, channels });
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channels, height, width]);
 

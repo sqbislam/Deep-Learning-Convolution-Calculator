@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default function OutputSection() {
   const globalContext = useGlobalContext();
 
-  const { height, width, channels } = globalContext?.input ?? {
+  const { height, width, channels } = globalContext?.output ?? {
     height: '5',
     width: '5',
     channels: '5',

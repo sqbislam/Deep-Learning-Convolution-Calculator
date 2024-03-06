@@ -1,3 +1,6 @@
+import { useCallback } from 'react';
+import { v4 } from 'uuid';
+
 import {
   Menubar,
   MenubarContent,
@@ -7,18 +10,33 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar';
 
-import { spatialBlocks } from '@/constant/spatial-blocks';
+import { useGlobalContext } from '@/store/GlobalStateContext';
 
-export default function BlockMenuBar({
-  selectedBlockArray,
-  setSelectedBlockArray,
-}: {
-  selectedBlockArray: string[];
-  setSelectedBlockArray: (value: any[]) => void;
-}) {
-  const handleBlockSelection = (item: any) => {
-    setSelectedBlockArray([...selectedBlockArray, item]);
-  };
+import { ISpatialBlock, spatialBlocks } from '@/constant/spatial-blocks';
+
+export default function BlockMenuBar() {
+  const globalStore = useGlobalContext();
+  const { handleAddingNewBlock, output } = globalStore;
+
+  const handleBlockSelection = useCallback(
+    (item: ISpatialBlock) => {
+      if (globalStore && handleAddingNewBlock) {
+        const itemWithId = {
+          ...item,
+          input: `${output?.height}x${output?.width}x${output?.channels}`,
+          _id: v4(),
+        };
+        handleAddingNewBlock(itemWithId);
+      }
+    },
+    [
+      globalStore,
+      handleAddingNewBlock,
+      output?.channels,
+      output?.height,
+      output?.width,
+    ]
+  );
 
   return (
     <Menubar>
@@ -28,10 +46,13 @@ export default function BlockMenuBar({
           <MenubarContent>
             {items.map((item, index) => (
               <MenubarItem
-                key={index}
+                key={item?.name ?? index}
                 inset={item.inset ?? false}
                 textValue={item.name}
-                onSelect={(e) => handleBlockSelection(item)}
+                onSelect={(e) => {
+                  e.preventDefault();
+                  handleBlockSelection(item as any);
+                }}
                 data-value={item.name}
               >
                 {item.name}

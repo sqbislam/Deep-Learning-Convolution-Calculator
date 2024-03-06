@@ -1,14 +1,17 @@
 'use client';
 
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
-interface GlobalContextType {
-  input?: any;
-  setInput?: (input: any) => void;
-  architecture?: any;
-  setArchitecture?: (architecture: any) => void;
-  output?: any;
-  setOutput?: (output: any) => void;
-}
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
+import { convolution2D } from '@/lib/calculations';
+import { GlobalContextType, ISpatialBlock } from '@/lib/types';
+import { nestedCopy } from '@/lib/utils';
 
 const GlobalStateContext = createContext<GlobalContextType | null>(null);
 
@@ -26,18 +29,94 @@ export const useGlobalContext = (): GlobalContextType => {
 
 export const GlobalStateProvider = (props: PropsWithChildren) => {
   const { children } = props;
-  const [input, setInput] = useState('system');
-  const [architecture, setArchitecture] = useState('system');
-  const [output, setOutput] = useState('system');
+  const [input, setInput] = useState({
+    height: '16',
+    width: '16',
+    channels: '1',
+  });
+  const [output, setOutput] = useState({
+    height: '16',
+    width: '16',
+    channels: '1',
+  });
+  const [selectedBlockArray, setSelectedBlockArray] = useState<ISpatialBlock[]>(
+    []
+  );
+  useEffect(() => {
+    calculateOutputDimension();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(selectedBlockArray), input]);
+
+  // Function to calculate change in output dimension when blocks change
+  const calculateOutputDimension = useCallback(
+    () => {
+      const newSelectedArray = nestedCopy(selectedBlockArray);
+      let output = input;
+      selectedBlockArray.forEach((block: ISpatialBlock, idx) => {
+        const { outputHeight, outputWidth, outputChannels } = convolution2D(
+          output,
+          block
+        );
+        // Calculate the current output
+        const curr_output = {
+          height: outputHeight.toString(),
+          width: outputWidth.toString(),
+          channels: outputChannels.toString(),
+        };
+        newSelectedArray[idx] = {
+          ...block,
+          input: `${curr_output.height}x${curr_output.width}x${curr_output.channels}`,
+        };
+        output = curr_output;
+      });
+      setSelectedBlockArray(newSelectedArray);
+      setOutput(output);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [input, selectedBlockArray, output]
+  );
+
+  const handleAddingNewBlock = useCallback((block: ISpatialBlock) => {
+    setSelectedBlockArray((prev) => {
+      return [...prev, block];
+    });
+    //calculateOutputDimension();
+  }, []);
+
+  const handleUpdatingBlock = useCallback(
+    (newblock: ISpatialBlock, blockId: string) => {
+      setSelectedBlockArray((prev) => {
+        const newArray = [...prev];
+        const index = newArray.findIndex((block) => block._id === blockId);
+        newArray[index] = newblock;
+        return newArray;
+      });
+      //calculateOutputDimension();
+    },
+    []
+  );
+
+  // Delete last block in array
+  const deleteLastBlock = () => {
+    setSelectedBlockArray((prev) => {
+      const newArray = [...prev];
+      newArray.pop();
+      return newArray;
+    });
+  };
+
   return (
     <GlobalStateContext.Provider
       value={{
         input,
         setInput,
-        architecture,
-        setArchitecture,
+        setSelectedBlockArray,
+        selectedBlockArray,
         output,
         setOutput,
+        handleAddingNewBlock,
+        deleteLastBlock,
+        handleUpdatingBlock,
       }}
     >
       {children}
