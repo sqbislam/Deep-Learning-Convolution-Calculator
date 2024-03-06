@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { v4 } from 'uuid';
 
+import { ISpatialBlock } from '@/lib/types';
+
 import {
   Menubar,
   MenubarContent,
@@ -12,7 +14,7 @@ import {
 
 import { useGlobalContext } from '@/store/GlobalStateContext';
 
-import { ISpatialBlock, spatialBlocks } from '@/constant/spatial-blocks';
+import { spatialBlocks } from '@/constant/spatial-blocks';
 
 export default function BlockMenuBar() {
   const globalStore = useGlobalContext();
@@ -51,7 +53,7 @@ export default function BlockMenuBar() {
                 textValue={item.name}
                 onSelect={(e) => {
                   e.preventDefault();
-                  handleBlockSelection(item as any);
+                  handleBlockSelection(item as ISpatialBlock);
                 }}
                 data-value={item.name}
               >

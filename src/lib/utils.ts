@@ -4,6 +4,6 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export function nestedCopy(array: any) {
+export function nestedCopy<T>(array: Array<T>) {
   return JSON.parse(JSON.stringify(array));
 }

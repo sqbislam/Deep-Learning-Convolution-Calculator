@@ -50,7 +50,7 @@ export const GlobalStateProvider = (props: PropsWithChildren) => {
   // Function to calculate change in output dimension when blocks change
   const calculateOutputDimension = useCallback(
     () => {
-      const newSelectedArray = nestedCopy(selectedBlockArray);
+      const newSelectedArray = nestedCopy<ISpatialBlock>(selectedBlockArray);
       let output = input;
       let calculatedOutput = {
         outputHeight: 0,
