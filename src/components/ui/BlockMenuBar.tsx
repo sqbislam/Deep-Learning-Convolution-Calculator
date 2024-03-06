@@ -1,5 +1,5 @@
+import { nanoid } from 'nanoid';
 import { useCallback } from 'react';
-import { v4 } from 'uuid';
 
 import { ISpatialBlock } from '@/lib/types';
 
@@ -26,7 +26,7 @@ export default function BlockMenuBar() {
         const itemWithId = {
           ...item,
           input: `${output?.height}x${output?.width}x${output?.channels}`,
-          _id: v4(),
+          _id: nanoid(),
         };
         handleAddingNewBlock(itemWithId);
       }
