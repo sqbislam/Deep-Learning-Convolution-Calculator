@@ -55,7 +55,7 @@ export default function BlockSection() {
             <Button
               variant='outline'
               size='icon'
-              onClick={(e) => deleteLastBlock && deleteLastBlock()}
+              onClick={() => deleteLastBlock && deleteLastBlock()}
             >
               <Eraser />
             </Button>

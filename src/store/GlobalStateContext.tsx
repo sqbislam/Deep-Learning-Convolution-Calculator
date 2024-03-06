@@ -52,7 +52,11 @@ export const GlobalStateProvider = (props: PropsWithChildren) => {
     () => {
       const newSelectedArray = nestedCopy(selectedBlockArray);
       let output = input;
-      let calculatedOutput: any;
+      let calculatedOutput = {
+        outputHeight: 0,
+        outputWidth: 0,
+        outputChannels: 0,
+      };
       selectedBlockArray.forEach((block: ISpatialBlock, idx) => {
         switch (block.type) {
           case 'conv2d':

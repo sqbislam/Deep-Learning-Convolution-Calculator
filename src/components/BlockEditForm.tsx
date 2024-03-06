@@ -1,5 +1,5 @@
 import { Edit2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { ISpatialBlock } from '@/lib/types';
 
@@ -20,11 +20,7 @@ export default function BlockEditForm(props: {
 
   const [currBlock, setCurrentBlock] = useState<ISpatialBlock>(block);
 
-  useEffect(() => {
-    setCurrentBlock(block);
-  }, []);
-
-  const handleChange = (event: any) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setCurrentBlock((prevState) => ({
       ...prevState,
@@ -32,13 +28,17 @@ export default function BlockEditForm(props: {
     }));
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event && event?.preventDefault();
     onUpdate && onUpdate(currBlock, currBlock._id as string);
   };
 
+  const submitForm = () => {
+    onUpdate && onUpdate(currBlock, currBlock._id as string);
+  };
+
   return (
-    <Popover onOpenChange={(b) => handleSubmit(undefined)}>
+    <Popover onOpenChange={() => submitForm()}>
       <PopoverTrigger asChild className='relative '>
         <div>
           <div
@@ -47,7 +47,7 @@ export default function BlockEditForm(props: {
             }  border-black opacity-80 relative`}
           >
             <span className='font-bold absolute bottom-[0.2em] left-[0.3em]'>
-              {block?.shortcut as any}
+              {block?.shortcut as string}
             </span>
             <Edit2 color='black' />
           </div>
@@ -57,7 +57,7 @@ export default function BlockEditForm(props: {
         <div className='grid gap-4'>
           <div className='space-y-2'>
             <h4 className='font-medium leading-none'>
-              {currBlock?.name as any}
+              {currBlock?.name as string}
             </h4>
             <p className='text-sm text-muted-foreground'>
               {`Set the properties for the ${currBlock?.name}.`}
@@ -69,7 +69,7 @@ export default function BlockEditForm(props: {
               <Input
                 disabled
                 id='input'
-                defaultValue={currBlock?.input as any}
+                defaultValue={currBlock?.input as string}
                 className='col-span-2 h-8'
               />
             </div>
@@ -81,8 +81,8 @@ export default function BlockEditForm(props: {
                   <Input
                     id={key}
                     name={key}
-                    defaultValue={value as any}
-                    value={value as any}
+                    defaultValue={value as string}
+                    value={value as string}
                     onChange={handleChange}
                     className='col-span-2 h-8'
                   />
