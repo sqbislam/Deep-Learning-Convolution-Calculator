@@ -2,7 +2,7 @@
 
 import { Metadata } from 'next';
 
-import { Button } from '@/components/ui/button';
+import ImageBlock from '@/components/ImageBlock';
 import {
   Card,
   CardContent,
@@ -11,55 +11,41 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+
+import { useGlobalContext } from '@/store/GlobalStateContext';
 
 export const metadata: Metadata = {
   title: 'Output Selector',
 };
 
 export default function OutputSection() {
+  const globalContext = useGlobalContext();
+
+  const { height, width, channels } = globalContext?.input ?? {
+    height: '5',
+    width: '5',
+    channels: '5',
+  };
   return (
-    <Card className='flex-grow bg-purple-500'>
+    <Card className='flex-grow'>
       <CardHeader>
-        <CardTitle>Output</CardTitle>
-        <CardDescription>Choose the type of Output</CardDescription>
+        <CardTitle>Add blocks</CardTitle>
+        <CardDescription>
+          Choose the type of blocks you want in the middle
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
-          <div className='grid w-full items-center gap-2'>
-            <div className='flex flex-col space-y-1.5'>
-              <Label htmlFor='name'>Name</Label>
-              <Input id='name' placeholder='Name of your project' />
-            </div>
-            <div className='flex flex-col space-y-1.5'>
-              <Label htmlFor='framework'>Framework</Label>
-              <Select>
-                <SelectTrigger id='framework'>
-                  <SelectValue placeholder='Select' />
-                </SelectTrigger>
-                <SelectContent position='popper'>
-                  <SelectItem value='next'>Next.js</SelectItem>
-                  <SelectItem value='sveltekit'>SvelteKit</SelectItem>
-                  <SelectItem value='astro'>Astro</SelectItem>
-                  <SelectItem value='nuxt'>Nuxt.js</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+        <div className='flex flex-col w-full items-center gap-2 space-y-20'>
+          <div className='flex flex-row flex-1 p-2 justify-center gap-2 items-center'>
+            <div className='flex flex-col space-y-1.5 min-w-[80px] relative'></div>
           </div>
-        </form>
+          <ImageBlock
+            dimensions={{ height, width, channels }}
+            classNames='bg-red-200'
+          />
+        </div>
       </CardContent>
-      <CardFooter className='flex justify-between'>
-        <Button variant='outline'>Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
+      <CardFooter className='mt-auto py-10 flex justify-center items-center'></CardFooter>
     </Card>
   );
 }
