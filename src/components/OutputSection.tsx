@@ -29,9 +29,9 @@ export default function OutputSection() {
   return (
     <Card className='flex-grow'>
       <CardHeader>
-        <CardTitle>Add blocks</CardTitle>
+        <CardTitle>Output</CardTitle>
         <CardDescription>
-          Choose the type of blocks you want in the middle
+          The output dimension based on the model defined
         </CardDescription>
       </CardHeader>
       <CardContent>
