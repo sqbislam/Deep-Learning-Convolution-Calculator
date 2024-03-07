@@ -111,7 +111,6 @@ export default function InputSection() {
               </div>
               <Toggle
                 variant='outline'
-                size='sm'
                 onPressedChange={handleBindDimensions}
                 className='h-5 w-5 mt-8'
               >
