@@ -10,20 +10,20 @@ export function convolution2D(input: IDimensions, block: ISpatialBlock) {
 
     const padding = parseInt(block.properties.padding);
     const stride = parseInt(block.properties.stride);
-    const filterSize = parseInt(block.properties.filterSize);
-    const numFilters = parseInt(block?.properties?.numFilters ?? '1');
+    const size = parseInt(block.properties.size);
+    const kernels = parseInt(block?.properties?.kernels ?? '1');
 
     // Calculate output dimension using the formula:
     // output_dimension = ((input_dimension - kernel_size + 2*padding) / stride) + 1
     const outputHeight =
-      Math.floor((inputHeight - filterSize + 2 * padding) / stride) + 1;
+      Math.floor((inputHeight - size + 2 * padding) / stride) + 1;
     const outputWidth =
-      Math.floor((inputWidth - filterSize + 2 * padding) / stride) + 1;
-    const outputChannels = numFilters;
+      Math.floor((inputWidth - size + 2 * padding) / stride) + 1;
+    const outputChannels = kernels;
 
     // // Console print all variables
     // console.debug({ inputHeight, inputWidth });
-    // console.debug({ padding, stride, filterSize });
+    // console.debug({ padding, stride, size });
     // console.debug({ outputHeight, outputWidth, outputChannels });
     return { outputHeight, outputWidth, outputChannels };
   } else {
@@ -40,20 +40,20 @@ export function pooling2D(input: IDimensions, block: ISpatialBlock) {
 
     const padding = parseInt(block.properties.padding);
     const stride = parseInt(block.properties.stride);
-    const filterSize = parseInt(block.properties.filterSize);
-    const numFilters = parseInt(input.channels);
+    const size = parseInt(block.properties.size);
+    const kernels = parseInt(input.channels);
 
     // Calculate output dimension using the formula:
     // output_dimension = ((input_dimension - kernel_size + 2*padding) / stride) + 1
     const outputHeight =
-      Math.floor((inputHeight - filterSize + 2 * padding) / stride) + 1;
+      Math.floor((inputHeight - size + 2 * padding) / stride) + 1;
     const outputWidth =
-      Math.floor((inputWidth - filterSize + 2 * padding) / stride) + 1;
-    const outputChannels = numFilters;
+      Math.floor((inputWidth - size + 2 * padding) / stride) + 1;
+    const outputChannels = kernels;
 
     // Console print all variables
     // console.debug({ inputHeight, inputWidth });
-    // console.debug({ padding, stride, filterSize });
+    // console.debug({ padding, stride, size });
     // console.debug({ outputHeight, outputWidth, outputChannels });
     return { outputHeight, outputWidth, outputChannels };
   } else {
@@ -70,19 +70,19 @@ export function transposeConv2D(input: IDimensions, block: ISpatialBlock) {
 
     const padding = parseInt(block.properties.padding);
     const stride = parseInt(block.properties.stride);
-    const filterSize = parseInt(block.properties.filterSize);
-    const numFilters = parseInt(input.channels);
+    const size = parseInt(block.properties.size);
+    const kernels = parseInt(input.channels);
 
     // Calculate output dimension using the formula:
     // output_dimension = ((input_dimension - kernel_size + 2*padding) / stride) + 1
     const outputHeight = Math.floor(
-      stride * (inputHeight - 1) + filterSize - 2 * padding
+      stride * (inputHeight - 1) + size - 2 * padding
     );
     const outputWidth = Math.floor(
-      stride * (inputWidth - 1) + filterSize - 2 * padding
+      stride * (inputWidth - 1) + size - 2 * padding
     );
 
-    const outputChannels = numFilters;
+    const outputChannels = kernels;
 
     return { outputHeight, outputWidth, outputChannels };
   } else {
