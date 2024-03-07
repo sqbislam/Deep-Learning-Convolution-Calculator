@@ -33,7 +33,7 @@ export const spatialBlocks: ISpatialBlocks = {
       properties: {
         filter: '3x3',
         stride: '2',
-        padding: '1',
+        padding: '2',
         numFilters: '32',
       },
     },
@@ -107,7 +107,7 @@ export const spatialBlocks: ISpatialBlocks = {
       properties: {
         filterSize: '3',
         stride: '2',
-        padding: '2',
+        padding: '1',
         numFilters: '32',
       },
     },
