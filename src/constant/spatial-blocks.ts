@@ -8,10 +8,10 @@ export const spatialBlocks: ISpatialBlocks = {
       color: 'bg-red-200',
       type: 'conv2d',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '2',
-        numFilters: '32',
+        kernels: '32',
       },
     },
     {
@@ -19,10 +19,10 @@ export const spatialBlocks: ISpatialBlocks = {
       shortcut: 'DC',
       color: 'bg-red-300',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '2',
-        numFilters: '32',
+        kernels: '32',
       },
     },
 
@@ -31,10 +31,10 @@ export const spatialBlocks: ISpatialBlocks = {
       shortcut: 'dC',
       color: 'bg-red-700',
       properties: {
-        filter: '3x3',
+        size: '3',
         stride: '2',
         padding: '2',
-        numFilters: '32',
+        kernels: '32',
       },
     },
   ],
@@ -45,7 +45,7 @@ export const spatialBlocks: ISpatialBlocks = {
       type: 'pool',
       color: 'bg-cyan-400',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '0',
       },
@@ -56,7 +56,7 @@ export const spatialBlocks: ISpatialBlocks = {
       type: 'pool',
       color: 'bg-cyan-600',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '0',
       },
@@ -69,10 +69,10 @@ export const spatialBlocks: ISpatialBlocks = {
       color: 'bg-lime-200',
       type: 'transpose2d',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '2',
-        numFilters: '32',
+        kernels: '32',
       },
     },
     {
@@ -81,10 +81,10 @@ export const spatialBlocks: ISpatialBlocks = {
       color: 'bg-lime-400',
       type: 'transpose2d',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '2',
-        numFilters: '32',
+        kernels: '32',
       },
     },
     {
@@ -93,10 +93,10 @@ export const spatialBlocks: ISpatialBlocks = {
       color: 'bg-lime-600',
       type: 'transpose2d',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '2',
-        numFilters: '32',
+        kernels: '32',
       },
     },
     {
@@ -105,10 +105,10 @@ export const spatialBlocks: ISpatialBlocks = {
       color: 'bg-lime-800',
       type: 'transpose2d',
       properties: {
-        filterSize: '3',
+        size: '3',
         stride: '2',
         padding: '1',
-        numFilters: '32',
+        kernels: '32',
       },
     },
   ],

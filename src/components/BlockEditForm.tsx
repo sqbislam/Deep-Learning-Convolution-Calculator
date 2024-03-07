@@ -1,4 +1,3 @@
-import { Edit2 } from 'lucide-react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { ISpatialBlock } from '@/lib/types';
@@ -42,14 +41,24 @@ export default function BlockEditForm(props: {
       <PopoverTrigger asChild className='relative '>
         <div>
           <div
-            className={`button-hover-effect h-[120px] w-[30px] ${
+            className={`button-hover-effect h-[120px] w-[80px] ${
               block?.color ?? 'bg-lime-200'
             }  border-black opacity-80 relative`}
           >
             <span className='font-bold absolute bottom-[0.2em] left-[0.3em]'>
               {block?.shortcut as string}
             </span>
-            <Edit2 color='black' />
+            <div className='flex flex-col items-start justify-start'>
+              {block &&
+                block?.properties &&
+                Object.entries(block.properties).map(([key, value]) => (
+                  <div key={key} className='text-xs font-sans'>
+                    <p>{`${key} ${value}`}</p>
+                  </div>
+                ))}
+            </div>
+
+            {/* <Edit2 color='black' /> */}
           </div>
         </div>
       </PopoverTrigger>

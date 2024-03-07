@@ -5,7 +5,7 @@ import { Eraser } from 'lucide-react';
 import { Metadata } from 'next';
 
 import BlockEditForm from '@/components/BlockEditForm';
-import BlockMenuBar from '@/components/ui/BlockMenuBar';
+import BlockMenuBar from '@/components/BlockMenuBar';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -37,7 +37,7 @@ export default function BlockSection() {
       <CardContent>
         <div className='flex flex-col w-full items-center gap-2 space-y-20'>
           <BlockMenuBar />
-          <div className='flex flex-row items-center justify-start gap-2 flex-wrap max-w-[300px]'>
+          <div className='flex flex-row items-center justify-start gap-2 flex-wrap w-full max-w-[320px] max-h-[600px] overflow-y-auto'>
             {selectedBlockArray &&
               selectedBlockArray.map((block, index) => (
                 <BlockEditForm
