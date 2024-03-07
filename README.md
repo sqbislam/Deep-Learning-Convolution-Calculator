@@ -6,5 +6,5 @@ I hope this will help others implementing deep learning models
 ### Simple calculator that meets all deep learning training requirements.
 
 Currently WIP....
-
+[Please check out the current prod build here!!](https://conv-calculator.vercel.app/)
 ![WIP Image](./assets/wip-current.png)
