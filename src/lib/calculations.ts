@@ -89,3 +89,30 @@ export function transposeConv2D(input: IDimensions, block: ISpatialBlock) {
     return { outputHeight: 0, outputWidth: 0, outputChannels: 0 };
   }
 }
+
+export function generatePytorchSequentialBlocks(
+  selectedBlockArray: ISpatialBlock[]
+) {
+  let pytorchCode = 'import torch.nn as nn\n\n';
+  pytorchCode += 'class Net(nn.Module):\n';
+  pytorchCode += '    def __init__(self):\n';
+  pytorchCode += '        super(Net, self).__init__()\n';
+  selectedBlockArray.forEach((block: ISpatialBlock, idx) => {
+    switch (block.type) {
+      case 'conv2d':
+        pytorchCode += `        self.conv${idx} = nn.Conv2d(${block.properties?.kernels}, ${block.properties?.kernels}, ${block.properties?.size}, padding=${block.properties?.padding}, stride=${block.properties?.stride})\n`;
+        break;
+      case 'pool':
+        pytorchCode += `        self.pool${idx} = nn.MaxPool2d(${block.properties?.size}, padding=${block.properties?.padding}, stride=${block.properties?.stride})\n`;
+        break;
+      case 'transpose2d':
+        pytorchCode += `        self.transposed_conv${idx} = nn.ConvTranspose2d(${block.properties?.kernels}, ${block.properties?.kernels}, ${block.properties?.size}, padding=${block.properties?.padding}, stride=${block.properties?.stride})\n`;
+        break;
+      default:
+        break;
+    }
+  });
+  pytorchCode += '    def forward(self, x):\n';
+  pytorchCode += '        return x\n';
+  return pytorchCode;
+}

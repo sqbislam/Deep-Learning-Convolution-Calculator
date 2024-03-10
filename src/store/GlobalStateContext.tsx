@@ -9,7 +9,12 @@ import {
   useState,
 } from 'react';
 
-import { convolution2D, pooling2D, transposeConv2D } from '@/lib/calculations';
+import {
+  convolution2D,
+  generatePytorchSequentialBlocks,
+  pooling2D,
+  transposeConv2D,
+} from '@/lib/calculations';
 import { GlobalContextType, ISpatialBlock } from '@/lib/types';
 import { nestedCopy } from '@/lib/utils';
 
@@ -42,8 +47,10 @@ export const GlobalStateProvider = (props: PropsWithChildren) => {
   const [selectedBlockArray, setSelectedBlockArray] = useState<ISpatialBlock[]>(
     []
   );
+  const [pytorchCode, setPytorchCode] = useState('');
   useEffect(() => {
     calculateOutputDimension();
+    setPytorchCode(generatePytorchSequentialBlocks(selectedBlockArray));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(selectedBlockArray), input]);
 
@@ -132,6 +139,7 @@ export const GlobalStateProvider = (props: PropsWithChildren) => {
         handleAddingNewBlock,
         deleteLastBlock,
         handleUpdatingBlock,
+        pytorchCode,
       }}
     >
       {children}

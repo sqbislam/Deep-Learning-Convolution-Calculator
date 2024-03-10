@@ -15,6 +15,7 @@ export interface GlobalContextType {
   handleAddingNewBlock?: (block: ISpatialBlock) => void;
   handleUpdatingBlock?: (newblock: ISpatialBlock, blockId: string) => void;
   deleteLastBlock?: () => void;
+  pytorchCode?: string;
 }
 
 export interface ISpatialBlocks {

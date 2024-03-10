@@ -15,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import CodeBlock from '@/components/ui/code-block';
 
 import { useGlobalContext } from '@/store/GlobalStateContext';
 
@@ -24,10 +25,14 @@ export const metadata: Metadata = {
 
 export default function BlockSection() {
   const globalStore = useGlobalContext();
-  const { deleteLastBlock, selectedBlockArray, handleUpdatingBlock } =
-    globalStore;
+  const {
+    deleteLastBlock,
+    selectedBlockArray,
+    handleUpdatingBlock,
+    pytorchCode,
+  } = globalStore;
   return (
-    <Card className='flex-grow'>
+    <Card className='flex-grow relative flex-shrink-0 basis-[50%]'>
       <CardHeader>
         <CardTitle>Add blocks</CardTitle>
         <CardDescription>
@@ -37,7 +42,18 @@ export default function BlockSection() {
       <CardContent>
         <div className='flex flex-col w-full items-center gap-2 space-y-20'>
           <BlockMenuBar />
-          <div className='flex flex-row items-center justify-start gap-2 flex-wrap w-full max-w-[320px] max-h-[600px] overflow-y-auto'>
+
+          <div className='flex flex-row items-center justify-start gap-2 flex-wrap w-full max-w-[320px] max-h-[600px] overflow-y-auto relative'>
+            {selectedBlockArray && selectedBlockArray.length > 0 && (
+              <Button
+                variant='outline'
+                size='icon'
+                className='absolute top-0 right-0'
+                onClick={() => deleteLastBlock && deleteLastBlock()}
+              >
+                <Eraser />
+              </Button>
+            )}
             {selectedBlockArray &&
               selectedBlockArray.map((block, index) => (
                 <BlockEditForm
@@ -50,17 +66,7 @@ export default function BlockSection() {
         </div>
       </CardContent>
       <CardFooter className='mt-auto py-10 flex justify-center items-center'>
-        {selectedBlockArray && selectedBlockArray.length > 0 && (
-          <div className='flex items-center justify-center flex-grow'>
-            <Button
-              variant='outline'
-              size='icon'
-              onClick={() => deleteLastBlock && deleteLastBlock()}
-            >
-              <Eraser />
-            </Button>
-          </div>
-        )}
+        {pytorchCode && <CodeBlock code={pytorchCode} />}
       </CardFooter>
     </Card>
   );
